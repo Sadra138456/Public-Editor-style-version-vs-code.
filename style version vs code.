@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML and CSS Editor in the Style of VS Code</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Segoe+UI&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0;}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#1e1e1e;color:#d4d4d4;display:flex;flex-direction:column;height:100vh;overflow:hidden;transition:background-color .3s,color .3s;}.toolbar{background-color:#252526;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 4px rgba(0,0,0,.2);z-index:10;}.toolbar .title{font-size:18px;font-weight:bold;animation:slideIn 1s ease-out;}.toolbar .toggle-theme{display:flex;align-items:center;cursor:pointer;}.toolbar .toggle-theme input{display:none;}.toolbar .toggle-theme label{position:relative;display:inline-block;width:50px;height:24px;background-color:#bbb;border-radius:34px;transition:background-color .3s;}.toolbar .toggle-theme label::before{content:"";position:absolute;width:20px;height:20px;left:2px;top:2px;background-color:white;border-radius:50%;transition:transform .3s;}.toolbar .toggle-theme input:checked+label{background-color:#4f4f4f;}.toolbar .toggle-theme input:checked+label::before{transform:translateX(26px);}@keyframes slideIn{from{transform:translateX(-100%);opacity:0;}to{transform:translateX(0);opacity:1;}}.container{flex:1;display:flex;padding:20px;gap:20px;overflow:hidden;perspective:1000px;}.editor-section,.output-section{flex:1;display:flex;flex-direction:column;background-color:#1e1e1e;border:1px solid #333;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,.3);overflow:hidden;}.section-header{background-color:#333;padding:10px 16px;font-size:14px;font-weight:bold;border-bottom:1px solid #444;display:flex;align-items:center;justify-content:space-between;}.section-header .icons{display:flex;gap:8px;}.section-header .icons span{width:12px;height:12px;border-radius:50%;background-color:#555;cursor:pointer;}.section-content{flex:1;display:flex;flex-direction:column;position:relative;overflow:hidden;}.section-content textarea{flex:1;padding:16px;background-color:transparent;color:#d4d4d4;border:none;resize:none;font-family:'Fira Code',monospace;font-size:14px;outline:none;position:relative;background-repeat:no-repeat;background-size:cover;background-position:center;}.editor-section:nth-child(1) .section-content{background-image:url('https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60');}.editor-section:nth-child(2) .section-content{background-image:url('https://images.unsplash.com/photo-1517430816045-df4b7de11d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60');}.section-content::before{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background-color:rgba(30,30,30,.7);z-index:1;}.output-section iframe{flex:1;border:none;background-color:#1e1e1e;border-radius:0 0 8px 8px;}.footer{background-color:#252526;color:#d4d4d4;text-align:center;padding:10px 0;font-size:12px;border-top:1px solid #333;}.body.light-mode{background-color:#f3f3f3;color:#333;}.body.light-mode .toolbar{background-color:#fff;color:#333;box-shadow:0 2px 4px rgba(0,0,0,.1);}.body.light-mode .editor-section,.body.light-mode .output-section{background-color:#fff;border-color:#ccc;}.body.light-mode .section-header{background-color:#f3f3f3;border-color:#ccc;color:#333;}.body.light-mode .section-content::before{background-color:rgba(243,243,243,.7);}.editor-section,.output-section{transform:rotateY(0deg) translateZ(0px);transition:transform .5s;}.editor-section:hover,.output-section:hover{transform:rotateY(5deg) translateZ(20px);}@media (max-width:1024px){.container{flex-direction:column;}}</style></head>
+<body>
+    <div class="toolbar">
+        <div class="title">VS Code Editor</div>
+        <div class="toggle-theme">
+            <input type="checkbox" id="themeToggle">
+            <label for="themeToggle"></label>
+        </div>
+    </div>
+    <div class="container">
+        <div class="editor-section">
+            <div class="section-header">HTML
+                <div class="icons">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="section-content">
+                <textarea id="htmlCode" placeholder="Enter your HTML code here"></textarea>
+            </div>
+        </div>
+        <div class="editor-section">
+            <div class="section-header">CSS
+                <div class="icons">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="section-content">
+                <textarea id="cssCode" placeholder="Enter your CSS code here"></textarea>
+            </div>
+        </div>
+        <div class="output-section">
+            <div class="section-header">Output
+                <div class="icons">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <iframe id="outputFrame"></iframe>
+        </div>
+    </div>
+    <footer>Created by Sadra Cheraghi</footer>
+    <script>
+        (function(){
+            const a=document.getElementById('htmlCode'),b=document.getElementById('cssCode'),c=document.getElementById('outputFrame'),d=document.getElementById('themeToggle');
+            function e(){const f=a.value,g=b.value,h=document.body.classList.contains('light-mode');const i=`body{${h?'background-color:#ffffff;color:#333333;':'background-color:#1e1e1e;color:#d4d4d4;'}font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;padding:20px;}`+g;const j=`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><style>${i}</style></head><body>${f}</body></html>`;c.srcdoc=j;}
+            a.addEventListener('input',e);
+            b.addEventListener('input',e);
+            a.value=`<h1 style="color: #007acc;">Hello World!</h1><p>This is a live HTML and CSS editor in the style of VS Code.</p>`;
+            b.value=`body{font-family:'Fira Code',monospace;padding:20px;}h1{border-bottom:2px solid #007acc;padding-bottom:10px;}p{font-size:16px;color:#333333;}`;
+            e();
+            d.addEventListener('change',()=>{document.body.classList.toggle('light-mode',d.checked);e();});
+            document.addEventListener('DOMContentLoaded',()=>{const k=localStorage.getItem('theme');if(k==='light'){d.checked=true;document.body.classList.add('light-mode');}e();});
+            d.addEventListener('change',()=>{localStorage.setItem('theme',d.checked?'light':'dark');});
+        })();
+    </script>
+</body>
+</html>
